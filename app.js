@@ -82,8 +82,8 @@ store.on("error",()=>{
 const sessionOption={
     store,
     secret: process.env.SECRET,
-    resave:false,
-    saveUninitialized:true,
+    resave: false,
+    saveUninitialized: true,
     cookie :{
         expires:Date.now()+ 7 *24*60*60*1000,//We will give in milli second
         maxAge:7 *24*60*60*1000,
@@ -124,10 +124,10 @@ app.use((req,res,next)=>{
 
 
 
-app.use((err, req, res, next) => {
-    const { statusCode = 500, message = "Something went wrong" } = err;
-    res.status(statusCode).render("error.ejs", { err });
-});
+// app.use((err, req, res, next) => {
+//     const { statusCode = 500, message = "Something went wrong" } = err;
+//     res.status(statusCode).render("error.ejs", { err });
+// });
 
 // app.get("/demouser",async(req,res)=>{
 //     let fakeUser =new User({
@@ -144,6 +144,11 @@ app.use("/",userRouter);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page not found"));
+});
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = "Something went wrong" } = err;
+    res.status(statusCode).render("error.ejs", { err });
 });
 
 // Creating the server
